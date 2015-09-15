@@ -13,12 +13,10 @@ public class CatCommand implements ICommand {
     	PrintStream printStream = new PrintStream(out);
         if (args.length == 0) {
             printStream.println("No argument supplied.");
+            return;
         }
         File currentDir = shell.getCurrentDir();
         File fileToOpen = new File(currentDir, args[0]);
-        if (!fileToOpen.exists()) {
-            printStream.println("File doesn't exist: " + args[0]);
-        }
         try(FileInputStream stream = new FileInputStream(fileToOpen)) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             reader.lines().forEach((line) -> {printStream.println(line);});
