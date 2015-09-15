@@ -79,7 +79,6 @@ public class Shell {
 					String[] args = parseCommand(cmd);
 					InputStream result = execute(args);
 					copyToOut(result);
-					System.out.println();
 				}
 			}
 		});
