@@ -30,6 +30,34 @@ public class Shell implements IShell {
 	public Shell(String currentDirPath) {
 		this.currentDir = new File(currentDirPath);
 	}
+	
+	//IShell implementation
+	
+	public boolean isCommandExists(String command) {
+		return commands.containsKey(command);
+	}
+	
+	public String getCommandDescription(String command) {
+		ICommand cmd = commands.get(command);
+		if (cmd != null) {
+			return cmd.getManual();
+		} else {
+			return null;
+		}
+	}
+	
+	public void stop(ICommand command) {
+		if (! (command instanceof ExitCommand)) {
+			return; //not permitted
+		}
+		executor.shutdownNow();
+	}
+	
+	public File getCurrentDir() {
+		return new File(currentDir.getAbsolutePath());
+	}
+	
+	//Shell methods
 
 	public Boolean registerCommand(ICommand command) {
 		String commandString = command.getCommand();
@@ -39,6 +67,21 @@ public class Shell implements IShell {
 		commands.put(commandString, command);
 		return true;
 	}
+	
+	public void listen() {
+		executor.execute(new Runnable() {
+			@Override
+			public void run() {
+				while (!Thread.currentThread().isInterrupted()) {
+					System.out.print(SHELL_PROMPT);
+					String cmd = System.console().readLine();
+					String[] args = parseCommand(cmd);
+					InputStream result = execute(args);
+					StreamUtils.copyToOut(result);
+				}
+			}
+		});
+	}	
 
 	private InputStream execute(String[] args) {
 		List<CommandSpecifier> cmds = parsePipe(args);
@@ -71,47 +114,9 @@ public class Shell implements IShell {
 		return new ByteArrayInputStream((error + ": " + commandString).getBytes());
 	}
 
-	public void listen() {
-		executor.execute(new Runnable() {
-			@Override
-			public void run() {
-				while (!Thread.currentThread().isInterrupted()) {
-					System.out.print(SHELL_PROMPT);
-					String cmd = System.console().readLine();
-					String[] args = parseCommand(cmd);
-					InputStream result = execute(args);
-					StreamUtils.copyToOut(result);
-				}
-			}
-		});
-	}
-
-	public boolean isCommandExists(String command) {
-		return commands.containsKey(command);
-	}
-
-	public String getCommandDescription(String command) {
-		ICommand cmd = commands.get(command);
-		if (cmd != null) {
-			return cmd.getManual();
-		} else {
-			return null;
-		}
-	}
 
 	private String[] parseCommand(String cmd) {
 		return cmd.replaceFirst(SHELL_PROMPT, "").split(" ");
-	}
-
-	public void stop(ICommand command) {
-		if (! (command instanceof ExitCommand)) {
-			return; //not permitted
-		}
-		executor.shutdownNow();
-	}
-
-	public File getCurrentDir() {
-		return new File(currentDir.getAbsolutePath());
 	}
 
 	private List<CommandSpecifier> parsePipe(String[] args) {
