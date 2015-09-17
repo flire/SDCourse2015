@@ -4,14 +4,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import ru.spbau.tishchenko.sd.class01.Shell;
+import ru.spbau.tishchenko.sd.class01.IShell;
 
 /**
  * Created by flire on 08.09.15.
  */
 public class PwdCommand implements ICommand {
     @Override
-    public void execute(Shell shell, String[] args, InputStream in, OutputStream out) {
+    public void execute(IShell shell, String[] args, InputStream in, OutputStream out) {
         new PrintStream(out).println(shell.getCurrentDir().getAbsolutePath());
     }
 

@@ -10,12 +10,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import ru.spbau.tishchenko.sd.class01.Shell;
+import ru.spbau.tishchenko.sd.class01.IShell;
 
 public class WcCommand implements ICommand {
 
 	@Override
-	public void execute(Shell shell, String[] args, InputStream in, OutputStream out) {
+	public void execute(IShell shell, String[] args, InputStream in, OutputStream out) {
 		PrintStream outStream = new PrintStream(out);
 		WcOptions options = new WcOptions(args);
 		if (options.filename != null) {

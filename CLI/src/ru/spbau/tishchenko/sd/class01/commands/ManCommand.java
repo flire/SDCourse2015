@@ -4,12 +4,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import ru.spbau.tishchenko.sd.class01.Shell;
+import ru.spbau.tishchenko.sd.class01.IShell;
 
 public class ManCommand implements ICommand {
 
 	@Override
-	public void execute(Shell shell, String[] args, InputStream in, OutputStream out) {
+	public void execute(IShell shell, String[] args, InputStream in, OutputStream out) {
 		PrintStream outStream = new PrintStream(out);
 		if (args.length != 1) {
 			outStream.println("Invalid number of arguments.");

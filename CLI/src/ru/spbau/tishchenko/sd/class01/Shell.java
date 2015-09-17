@@ -1,5 +1,6 @@
 package ru.spbau.tishchenko.sd.class01;
 
+import ru.spbau.tishchenko.sd.class01.commands.ExitCommand;
 import ru.spbau.tishchenko.sd.class01.commands.ICommand;
 
 import java.io.ByteArrayInputStream;
@@ -18,7 +19,7 @@ import java.util.concurrent.Executors;
 /**
  * Created by flire on 08.09.15.
  */
-public class Shell {
+public class Shell implements IShell {
 	private static final String PIPE_DELIMITER = "|";
 	private HashMap<String, ICommand> commands = new HashMap<String, ICommand>();
 	private File currentDir;
@@ -101,7 +102,10 @@ public class Shell {
 		return cmd.replaceFirst(SHELL_PROMPT, "").split(" ");
 	}
 
-	public void stop() {
+	public void stop(ICommand command) {
+		if (! (command instanceof ExitCommand)) {
+			return; //not permitted
+		}
 		executor.shutdownNow();
 	}
 
