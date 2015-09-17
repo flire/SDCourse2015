@@ -2,6 +2,7 @@ package ru.spbau.tishchenko.sd.class01;
 
 import ru.spbau.tishchenko.sd.class01.commands.ExitCommand;
 import ru.spbau.tishchenko.sd.class01.commands.ICommand;
+import ru.spbau.tishchenko.sd.class01.utils.StreamUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -79,7 +80,7 @@ public class Shell implements IShell {
 					String cmd = System.console().readLine();
 					String[] args = parseCommand(cmd);
 					InputStream result = execute(args);
-					copyToOut(result);
+					StreamUtils.copyToOut(result);
 				}
 			}
 		});
@@ -107,25 +108,6 @@ public class Shell implements IShell {
 			return; //not permitted
 		}
 		executor.shutdownNow();
-	}
-
-	private void copyToOut(InputStream input) {
-		byte[] buf = new byte[8192];
-		try {
-			while (true) {
-				int length;
-				if (input.available() <= 0) {
-					break;
-				}
-				length = input.read(buf);
-				if (length <= 0)
-					break;
-				System.out.write(buf, 0, length);
-			}
-			input.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public File getCurrentDir() {
