@@ -3,6 +3,7 @@ package ru.spbau.tishchenko.sd.class01.commands;
 import java.io.*;
 
 import ru.spbau.tishchenko.sd.class01.IShell;
+import ru.spbau.tishchenko.sd.class01.utils.StreamUtils;
 
 /**
  * Created by flire on 08.09.15.
@@ -12,7 +13,7 @@ public class CatCommand implements ICommand {
     public void execute(IShell shell, String[] args, InputStream in, OutputStream out) {
     	PrintStream printStream = new PrintStream(out);
         if (args.length == 0) {
-            printStream.println("No argument supplied.");
+            StreamUtils.copy(in, out);
             return;
         }
         File currentDir = shell.getCurrentDir();
