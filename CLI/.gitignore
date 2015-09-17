@@ -1,0 +1,39 @@
+*.pydevproject
+.metadata
+.gradle
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+
+# Eclipse Core
+.project
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# JDT-specific (Eclipse Java Development Tools)
+.classpath
+
+*~
+
+# IDEA & IntelliJ files
+
+*.iml
+
+## Directory-based project format:
+.idea/
+
+*.ipr
+*.iws
+
+# IntelliJ
+/out/
