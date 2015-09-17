@@ -77,7 +77,7 @@ public class Shell implements IShell {
 					String cmd = System.console().readLine();
 					String[] args = parseCommand(cmd);
 					InputStream result = execute(args);
-					StreamUtils.copyToOut(result);
+					StreamUtils.copy(result, System.out);
 				}
 			}
 		});
