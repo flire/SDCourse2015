@@ -66,10 +66,10 @@ public class GrepCommand implements ICommand {
             if (m.find()) {
                 for (int j = i; j < Math.min(data.size() - 1, i + linesAfter); ++j) {
                     String outLine = data.get(j);
-                    System.out.println(outLine);
+                    output.println(outLine);
                 }
                 if (isAfterContext) {
-                    System.out.println("----------------------------------------------");
+                    output.println("----------------------------------------------");
                 }
             }
         }
