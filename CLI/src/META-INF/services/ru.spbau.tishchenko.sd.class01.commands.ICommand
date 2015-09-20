@@ -3,3 +3,4 @@ ru.spbau.tishchenko.sd.class01.commands.PwdCommand
 ru.spbau.tishchenko.sd.class01.commands.ExitCommand
 ru.spbau.tishchenko.sd.class01.commands.WcCommand
 ru.spbau.tishchenko.sd.class01.commands.ManCommand
+ru.spbau.tishchenko.sd.class01.commands.grep.jc.JCGrepCommand
