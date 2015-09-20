@@ -1,8 +1,8 @@
 package ru.spbau.tishchenko.sd.class01.utils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StreamUtils {
 	public static void copy(InputStream input, OutputStream output) {
@@ -23,4 +23,14 @@ public class StreamUtils {
 			e.printStackTrace();
 		}
 	}
+
+    public static List<String> readLines(FileInputStream fileInputStream) {
+        List<String> result = new ArrayList<>();
+        try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream))) {
+            result.add(bufferedReader.readLine());
+        } catch (IOException e) {
+            System.err.println("Cannot open file stream: " + e.getMessage());
+        }
+        return result;
+    }
 }
