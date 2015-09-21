@@ -24,10 +24,12 @@ public class StreamUtils {
 		}
 	}
 
-    public static List<String> readLines(FileInputStream fileInputStream) {
+    public static List<String> readLines(InputStream inputStream) {
         List<String> result = new ArrayList<>();
-        try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream))) {
-            result.add(bufferedReader.readLine());
+        try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
+			String line = null;
+			while((line = bufferedReader.readLine()) != null)
+            	result.add(line);
         } catch (IOException e) {
             System.err.println("Cannot open file stream: " + e.getMessage());
         }

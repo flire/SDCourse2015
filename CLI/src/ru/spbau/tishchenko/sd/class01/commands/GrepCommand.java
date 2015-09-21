@@ -30,7 +30,7 @@ public class GrepCommand implements ICommand {
             pattern = "\\b" + pattern + "\\b";
         }
 
-        Pattern p = Pattern.compile(options.pattern, flags);
+        Pattern p = Pattern.compile(pattern, flags);
         if (options.files.size() == 0) {
             try {
                 grepStream(p, in);
@@ -54,8 +54,7 @@ public class GrepCommand implements ICommand {
             output.println("File " + fileName + " wasn't found");
             return;
         }
-        List<String> data;
-        data = StreamUtils.readLines(new FileInputStream(file));
+        List<String> data = StreamUtils.readLines(new FileInputStream(file));
         grepData(p, data);
     }
 
@@ -76,10 +75,7 @@ public class GrepCommand implements ICommand {
     }
 
     private void grepStream(Pattern p, InputStream in) throws IOException {
-        List<String> data = new ArrayList<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in))) {
-            data.add(bufferedReader.readLine());
-        }
+        List<String> data = StreamUtils.readLines(in);
         grepData(p, data);
     }
 
@@ -114,6 +110,7 @@ public class GrepCommand implements ICommand {
                 if (!arg.startsWith(OPTION_PREFIX) && (i - 1 < 0 || !args[i - 1].equals(AFTER_CONTEXT_OPTION))) {
                     if (!wasPatternRead) {
                         pattern = arg;
+                        wasPatternRead = true;
                     } else {
                         files.add(arg);
                     }

@@ -5,3 +5,4 @@ ru.spbau.tishchenko.sd.class01.commands.WcCommand
 ru.spbau.tishchenko.sd.class01.commands.ManCommand
 ru.spbau.tishchenko.sd.class01.commands.grep.jc.JCGrepCommand
 ru.spbau.tishchenko.sd.class01.commands.grep.apachecli.ACGrepCommand
+ru.spbau.tishchenko.sd.class01.commands.GrepCommand
