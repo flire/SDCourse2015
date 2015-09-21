@@ -4,18 +4,18 @@ import ru.spbau.tishchenko.sd.class01.commands.ExitCommand;
 import ru.spbau.tishchenko.sd.class01.commands.ICommand;
 import ru.spbau.tishchenko.sd.class01.utils.StreamUtils;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Created by flire on 08.09.15.
@@ -25,10 +25,11 @@ public class Shell implements IShell {
 	private HashMap<String, ICommand> commands = new HashMap<String, ICommand>();
 	private File currentDir;
 	private String SHELL_PROMPT = ">>>";
-	private ExecutorService executor = Executors.newSingleThreadExecutor();
+	private boolean isInterrupted;
 
 	public Shell(String currentDirPath) {
 		this.currentDir = new File(currentDirPath);
+		isInterrupted = false;
 	}
 	
 	//IShell implementation
@@ -50,7 +51,7 @@ public class Shell implements IShell {
 		if (! (command instanceof ExitCommand)) {
 			return; //not permitted
 		}
-		executor.shutdownNow();
+		isInterrupted = true;
 	}
 	
 	public File getCurrentDir() {
@@ -69,19 +70,18 @@ public class Shell implements IShell {
 	}
 	
 	public void listen() {
-		executor.execute(new Runnable() {
-			@Override
-			public void run() {
-				while (!Thread.currentThread().isInterrupted()) {
-					System.out.print(SHELL_PROMPT);
-					String cmd = System.console().readLine();
-					String[] args = parseCommand(cmd);
-					InputStream result = execute(args);
-					StreamUtils.copy(result, System.out);
-				}
+		try (BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in))) {
+			while (!isInterrupted) {
+				System.out.print(SHELL_PROMPT);
+				String cmd = buffer.readLine();
+				String[] args = parseCommand(cmd);
+				InputStream result = execute(args);
+				StreamUtils.copy(result, System.out);
 			}
-		});
-	}	
+		} catch (IOException e) {
+			System.err.println("Stream reading error: " + e.getMessage());
+		}
+	}
 
 	private InputStream execute(String[] args) {
 		List<CommandSpecifier> cmds = parsePipe(args);
