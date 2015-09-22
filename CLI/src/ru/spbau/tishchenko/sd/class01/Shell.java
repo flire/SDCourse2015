@@ -77,6 +77,7 @@ public class Shell implements IShell {
 				String[] args = parseCommand(cmd);
 				InputStream result = execute(args);
 				StreamUtils.copy(result, System.out);
+				result.close();
 			}
 		} catch (IOException e) {
 			System.err.println("Stream reading error: " + e.getMessage());

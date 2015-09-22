@@ -18,7 +18,6 @@ public class StreamUtils {
 					break;
 				output.write(buf, 0, length);
 			}
-			input.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

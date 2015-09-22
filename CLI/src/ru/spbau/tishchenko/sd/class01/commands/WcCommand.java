@@ -30,7 +30,8 @@ public class WcCommand implements ICommand {
 		int words = 0;
 		int lines = 0;
 		int chars = 0;
-		try(BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			String line;
 			while (in.available() > 0) {
 				line = reader.readLine();
