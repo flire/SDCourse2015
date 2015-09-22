@@ -117,7 +117,7 @@ public class Shell implements IShell {
 
 
 	private String[] parseCommand(String cmd) {
-		return cmd.replaceFirst(SHELL_PROMPT, "").split(" ");
+		return cmd.replaceFirst(SHELL_PROMPT, "").split("\\s+");
 	}
 
 	private List<CommandSpecifier> parsePipe(String[] args) {
