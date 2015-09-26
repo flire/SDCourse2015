@@ -37,3 +37,7 @@ local.properties
 
 # IntelliJ
 /out/
+
+# Build directories
+build/
+dist/
