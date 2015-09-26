@@ -17,9 +17,9 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import ru.spbau.tishchenko.sd.class01.IShell;
 import ru.spbau.tishchenko.sd.class01.commands.ICommand;
 import ru.spbau.tishchenko.sd.class01.commands.grep.GrepLogic;
+import ru.spbau.tishchenko.sd.class01.shell.IShell;
 
 public class ACGrepCommand implements ICommand {
 	

@@ -1,4 +1,4 @@
-package ru.spbau.tishchenko.sd.class01;
+package ru.spbau.tishchenko.sd.class01.shell;
 
 import java.io.File;
 
@@ -8,5 +8,4 @@ public interface IShell {
 	public String getCommandDescription(String command);
 	public boolean isCommandExists(String command);
 	public File getCurrentDir();
-	public void stop(ICommand command);
 }

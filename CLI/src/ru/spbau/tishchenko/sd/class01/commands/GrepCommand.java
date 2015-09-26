@@ -1,6 +1,6 @@
 package ru.spbau.tishchenko.sd.class01.commands;
 
-import ru.spbau.tishchenko.sd.class01.IShell;
+import ru.spbau.tishchenko.sd.class01.shell.IShell;
 import ru.spbau.tishchenko.sd.class01.utils.StreamUtils;
 
 import java.io.*;

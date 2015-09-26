@@ -3,7 +3,7 @@ package ru.spbau.tishchenko.sd.class01.commands;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import ru.spbau.tishchenko.sd.class01.IShell;
+import ru.spbau.tishchenko.sd.class01.shell.IShell;
 /*
  * An interface denoting a command.
  * It isn't neccessary to register the command in the shell, all commands loaded

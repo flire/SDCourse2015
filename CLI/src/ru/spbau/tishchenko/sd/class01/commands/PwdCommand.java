@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import ru.spbau.tishchenko.sd.class01.IShell;
+import ru.spbau.tishchenko.sd.class01.shell.IShell;
 
 /**
  * Created by flire on 08.09.15.

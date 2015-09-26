@@ -9,9 +9,9 @@ import java.io.PrintStream;
 
 import com.beust.jcommander.JCommander;
 
-import ru.spbau.tishchenko.sd.class01.IShell;
 import ru.spbau.tishchenko.sd.class01.commands.ICommand;
 import ru.spbau.tishchenko.sd.class01.commands.grep.GrepLogic;
+import ru.spbau.tishchenko.sd.class01.shell.IShell;
 
 public class JCGrepCommand implements ICommand {
 	

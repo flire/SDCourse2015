@@ -1,15 +1,9 @@
-package ru.spbau.tishchenko.sd.class01;
+package ru.spbau.tishchenko.sd.class01.shell;
 
-import ru.spbau.tishchenko.sd.class01.commands.ExitCommand;
-import ru.spbau.tishchenko.sd.class01.commands.ICommand;
-import ru.spbau.tishchenko.sd.class01.utils.StreamUtils;
-
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.ArrayList;
@@ -17,82 +11,53 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by flire on 08.09.15.
- */
-public class Shell implements IShell {
+import ru.spbau.tishchenko.sd.class01.commands.ICommand;
+
+public class ShellImpl implements IShell {
+
 	private static final String PIPE_DELIMITER = "|";
 	private HashMap<String, ICommand> commands = new HashMap<String, ICommand>();
-	private File currentDir;
-	private String SHELL_PROMPT = ">>>";
-	private boolean isInterrupted;
+	protected File currentDir;
 
-	public Shell(String currentDirPath) {
-		this.currentDir = new File(currentDirPath);
-		isInterrupted = false;
+	public ShellImpl() {
+		super();
 	}
-	
-	//IShell implementation
-	
+
 	public boolean isCommandExists(String command) {
 		return commands.containsKey(command);
 	}
-	
+
 	public String getCommandDescription(String command) {
-		ICommand cmd = commands.get(command);
+		ICommand cmd = getCommand(command);
 		if (cmd != null) {
 			return cmd.getManual();
 		} else {
 			return null;
 		}
 	}
-	
-	public void stop(ICommand command) {
-		if (! (command instanceof ExitCommand)) {
-			return; //not permitted
-		}
-		isInterrupted = true;
-	}
-	
+
 	public File getCurrentDir() {
 		return new File(currentDir.getAbsolutePath());
 	}
-	
-	//Shell methods
 
 	public Boolean registerCommand(ICommand command) {
 		String commandString = command.getCommand();
-		if (commands.containsKey(commandString)) {
+		if (isCommandExists(commandString)) {
 			return false;
 		}
 		commands.put(commandString, command);
 		return true;
 	}
-	
-	public void listen() {
-		try (BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in))) {
-			while (!isInterrupted) {
-				System.out.print(SHELL_PROMPT);
-				String cmd = buffer.readLine();
-				String[] args = parseCommand(cmd);
-				InputStream result = execute(args);
-				StreamUtils.copy(result, System.out);
-				result.close();
-			}
-		} catch (IOException e) {
-			System.err.println("Stream reading error: " + e.getMessage());
-		}
-	}
 
-	private InputStream execute(String[] args) {
+	protected InputStream execute(String[] args) {
 		List<CommandSpecifier> cmds = parsePipe(args);
 		InputStream result = null;
 		for (CommandSpecifier cmd : cmds) {
 			String commandString = cmd.command;
-			if (!commands.containsKey(commandString)) {
+			if (!isCommandExists(commandString)) {
 				return createErrorStream("Command not found", commandString);
 			}
-			ICommand command = commands.get(commandString);
+			ICommand command = getCommand(commandString);
 			String[] effectiveArguments = cmd.args;
 			try (PipedOutputStream out = new PipedOutputStream()) {
 				if (result == null) {
@@ -110,14 +75,21 @@ public class Shell implements IShell {
 		}
 		return result;
 	}
+	
+	protected ICommand getCommand(String cmdLine) {
+		return commands.get(cmdLine);
+	}
+	
+	protected void putCommand(ICommand command) {
+		commands.put(command.getCommand(), command);
+	}
 
 	private InputStream createErrorStream(String error, String commandString) {
 		return new ByteArrayInputStream((error + ": " + commandString).getBytes());
 	}
 
-
-	private String[] parseCommand(String cmd) {
-		return cmd.replaceFirst(SHELL_PROMPT, "").split("\\s+");
+	protected String[] parseCommand(String cmd) {
+		return cmd.split("\\s+");
 	}
 
 	private List<CommandSpecifier> parsePipe(String[] args) {
@@ -133,7 +105,8 @@ public class Shell implements IShell {
 		return result;
 	}
 
-	private class CommandSpecifier {
+
+	class CommandSpecifier {
 		public final String command;
 		public final String[] args;
 

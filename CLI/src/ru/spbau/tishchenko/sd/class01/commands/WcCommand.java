@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import ru.spbau.tishchenko.sd.class01.IShell;
+import ru.spbau.tishchenko.sd.class01.shell.IShell;
 
 public class WcCommand implements ICommand {
 
