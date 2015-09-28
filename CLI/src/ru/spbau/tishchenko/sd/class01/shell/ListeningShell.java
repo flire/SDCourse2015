@@ -17,6 +17,8 @@ import java.util.Arrays;
 public class ListeningShell extends ShellImpl {
 	String SHELL_PROMPT = ">>>";
 	private boolean isInterrupted;
+	private static final String ANSI_RESET = "\u001B[0m";
+	private static final String ANSI_RED = "\u001B[31m";
 
 	public ListeningShell(String currentDirPath) {
 		this.currentDir = new File(currentDirPath);
@@ -30,7 +32,7 @@ public class ListeningShell extends ShellImpl {
 				System.out.print(SHELL_PROMPT);
 				String cmd = buffer.readLine();
 				String[] args = parseCommand(cmd);
-				InputStream result = execute(args);
+				InputStream result = execute(args, System.in);
 				StreamUtils.copy(result, System.out);
 				result.close();
 			}
@@ -46,5 +48,10 @@ public class ListeningShell extends ShellImpl {
 	@Override
 	protected String[] parseCommand(String cmd) {
 		return super.parseCommand(cmd.replaceFirst(SHELL_PROMPT, ""));
+	}
+
+	@Override
+	public HighlightingOptions getHighlightingOptions() {
+		return new HighlightingOptions(ANSI_RED, ANSI_RESET);
 	}
 }

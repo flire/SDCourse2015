@@ -8,4 +8,5 @@ public interface IShell {
 	public String getCommandDescription(String command);
 	public boolean isCommandExists(String command);
 	public File getCurrentDir();
+	public HighlightingOptions getHighlightingOptions();
 }

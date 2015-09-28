@@ -13,7 +13,7 @@ import java.util.List;
 
 import ru.spbau.tishchenko.sd.class01.commands.ICommand;
 
-public class ShellImpl implements IShell {
+public abstract class ShellImpl implements IShell {
 
 	private static final String PIPE_DELIMITER = "|";
 	private HashMap<String, ICommand> commands = new HashMap<String, ICommand>();
@@ -49,7 +49,7 @@ public class ShellImpl implements IShell {
 		return true;
 	}
 
-	protected InputStream execute(String[] args) {
+	protected InputStream execute(String[] args, InputStream in) {
 		List<CommandSpecifier> cmds = parsePipe(args);
 		InputStream result = null;
 		for (CommandSpecifier cmd : cmds) {
@@ -62,7 +62,7 @@ public class ShellImpl implements IShell {
 			try (PipedOutputStream out = new PipedOutputStream()) {
 				if (result == null) {
 					result = new PipedInputStream(out);
-					command.execute(this, effectiveArguments, System.in, out);
+					command.execute(this, effectiveArguments, in, out);
 				} else {
 					PipedInputStream newIn = new PipedInputStream(out);
 					command.execute(this, effectiveArguments, result, out);
@@ -120,4 +120,6 @@ public class ShellImpl implements IShell {
 			}
 		}
 	}
+
+	abstract public HighlightingOptions getHighlightingOptions();
 }

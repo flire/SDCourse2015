@@ -12,12 +12,16 @@ import java.util.regex.Pattern;
 public class GrepLogic {
 	private Pattern pattern;
 	private int linesAfter;
-	public static final String ANSI_RESET = "\u001B[0m";
-	public static final String ANSI_RED = "\u001B[31m";
-
+	private HighlightingOptions highlightingOptions;
+	
 	public GrepLogic(String pattern, boolean asWord, boolean caseSensitive, int linesAfter) {
-		this.pattern = buildPattern(pattern, asWord, caseSensitive);
-		this.linesAfter = linesAfter;
+		this(pattern, new Options(asWord, caseSensitive, linesAfter), HighlightingOptions.NO_HIGHLIGHTING);
+	}
+
+	public GrepLogic(String pattern, Options options, HighlightingOptions highlighingOptions) {
+		this.pattern = buildPattern(pattern, options.asWord, options.caseSensitive);
+		this.linesAfter = options.linesAfter;
+		this.highlightingOptions = highlighingOptions;
 	}
 	
 	public void execute(InputStream in, OutputStream out) {
@@ -29,7 +33,9 @@ public class GrepLogic {
 				Matcher m = pattern.matcher(currentLine);
 				if (m.find()) {
 					following = linesAfter;
-					outStream.println(m.replaceAll(ANSI_RED + "$0" + ANSI_RESET));
+					outStream.println(m.replaceAll(highlightingOptions.startMarker
+							+ "$0"
+							+ highlightingOptions.endMarker));
 				} else if (following > 0) {
 					following--;
 					outStream.println(currentLine);
@@ -48,6 +54,30 @@ public class GrepLogic {
 			return Pattern.compile(pattern);
 		}
 		return Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+	}
+	
+	public static class Options {
+		public final boolean asWord;
+		public final boolean caseSensitive;
+		public final int linesAfter;
+
+		public Options(boolean asWord, boolean caseSensitive, int linesAfter) {
+			this.asWord = asWord;
+			this.caseSensitive = caseSensitive;
+			this.linesAfter = linesAfter;
+		}
+	}
+	
+	public static class HighlightingOptions {
+		public final String startMarker;
+		public final String endMarker;
+		
+		public HighlightingOptions(String startMarker, String endMarker) {
+			this.startMarker = startMarker;
+			this.endMarker = endMarker;
+		}
+		
+		public static final HighlightingOptions NO_HIGHLIGHTING = new HighlightingOptions("", "");
 	}
 
 }

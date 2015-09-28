@@ -11,6 +11,7 @@ import com.beust.jcommander.JCommander;
 
 import ru.spbau.tishchenko.sd.class01.commands.ICommand;
 import ru.spbau.tishchenko.sd.class01.commands.grep.GrepLogic;
+import ru.spbau.tishchenko.sd.class01.shell.HighlightingOptions;
 import ru.spbau.tishchenko.sd.class01.shell.IShell;
 
 public class JCGrepCommand implements ICommand {
@@ -30,7 +31,10 @@ public class JCGrepCommand implements ICommand {
 		if (!areParametersValid) {
 			return;
 		}
-		GrepLogic grepExecutor = new GrepLogic(pattern, grepArgs.asWord, !grepArgs.caseInsensitive, grepArgs.linesAfter);
+        HighlightingOptions options = shell.getHighlightingOptions();
+		GrepLogic grepExecutor = new GrepLogic(pattern, 
+				new GrepLogic.Options(grepArgs.asWord, !grepArgs.caseInsensitive, grepArgs.linesAfter), 
+				new GrepLogic.HighlightingOptions(options.startMarker, options.endMarker));
 		try {
 			if (file != null) {
 				in = new FileInputStream(file);
