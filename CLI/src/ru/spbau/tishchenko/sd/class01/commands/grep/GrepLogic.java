@@ -48,7 +48,7 @@ public class GrepLogic {
 
 	private Pattern buildPattern(String pattern, boolean asWord, boolean caseSensitive) {
 		if (asWord) {
-			pattern = "\b" + pattern.replaceAll("^\b", "").replaceAll("\b$", "") + "\b";
+			pattern = "\\b" + pattern.replaceAll("^\b", "").replaceAll("\b$", "") + "\\b";
 		}
 		if (caseSensitive) {
 			return Pattern.compile(pattern);
