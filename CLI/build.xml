@@ -8,6 +8,7 @@
 	<property name="dist.dir" location="dist" />
 	<property name="dist.lib.dir" location="dist/lib" />
 	<property name="lib.dir" value="lib" />
+	<property name="report.dir" value="junit-report"/>
 	<property name="main-class" value="ru.spbau.tishchenko.sd.class01.Main" />
 
 	<target name="init">
@@ -51,4 +52,24 @@
 
 	<!-- Default, run this -->
 	<target name="main" depends="clean, jar" />
+	
+	<!-- Run JUnit tests -->
+	<target name="junit" depends="compile">
+		<mkdir dir="${report.dir}" />
+	    <junit printsummary="on" haltonfailure="no">
+	    <classpath>
+	        <fileset dir="${lib.dir}">
+				<include name="**/**.jar" />
+				<exclude name="**/**sources.jar" />
+				<exclude name="**/**javadoc.jar" />
+	        </fileset>
+	        <pathelement location="${build.dir}"/>
+	    </classpath>
+	    	<test name="ru.spbau.tishchenko.sd.class01.test.GrepTestSuite" 
+	    		haltonfailure="no" todir="${report.dir}">
+	    		<formatter type="plain" />
+	    		<formatter type="xml" />
+	    	</test>
+	    </junit>
+	</target>
 </project>
