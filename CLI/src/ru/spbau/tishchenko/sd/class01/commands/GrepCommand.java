@@ -63,7 +63,7 @@ public class GrepCommand implements ICommand {
             String line = data.get(i);
             Matcher m = p.matcher(line);
             if (m.find()) {
-                for (int j = i; j < Math.min(data.size() - 1, i + linesAfter); ++j) {
+                for (int j = i; j < Math.min(data.size(), i + linesAfter); ++j) {
                     String outLine = data.get(j);
                     output.println(outLine);
                 }
