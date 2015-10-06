@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GrepCommand implements ICommand {
+    public static final String LINE_SEPARATOR = "----------------------------------------------";
     private boolean isAfterContext;
     private int linesAfter = 1;
     private PrintStream output;
@@ -59,17 +60,21 @@ public class GrepCommand implements ICommand {
     }
 
     private void grepData(Pattern p, List<String> data) {
-        for (int i = 0; i < data.size(); ++i) {
+        int i = 0;
+        while (i < data.size()) {
             String line = data.get(i);
             Matcher m = p.matcher(line);
             if (m.find()) {
-                for (int j = i; j < Math.min(data.size(), i + linesAfter); ++j) {
-                    String outLine = data.get(j);
+                for (int linesLeft = 0; linesLeft + i < data.size() && linesLeft < linesAfter; linesLeft ++) {
+                    String outLine = data.get(linesLeft + i);
                     output.println(outLine);
                 }
-                if (isAfterContext) {
-                    output.println("----------------------------------------------");
+                i += linesAfter;
+                if (isAfterContext && i < data.size()) {
+                    output.println(LINE_SEPARATOR);
                 }
+            } else {
+                i++;
             }
         }
     }
