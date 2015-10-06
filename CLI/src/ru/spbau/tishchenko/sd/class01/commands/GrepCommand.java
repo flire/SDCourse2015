@@ -124,7 +124,7 @@ public class GrepCommand implements ICommand {
                         case AFTER_CONTEXT_OPTION:
                             isAfterContext = true;
                             if (i < args.length - 1) {
-                                linesNumber = Integer.parseInt(args[i + 1]);
+                                linesNumber = Integer.parseInt(args[i + 1]) + 1;
                             }
                             break;
                         case IGNORE_CASE_OPTION:

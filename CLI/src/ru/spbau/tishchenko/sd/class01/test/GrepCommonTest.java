@@ -1,10 +1,10 @@
 package ru.spbau.tishchenko.sd.class01.test;
 
+import org.junit.Test;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-
-import org.junit.Test;
 
 public abstract class GrepCommonTest extends ShellCommandTestCase {
 
