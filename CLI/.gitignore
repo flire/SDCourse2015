@@ -41,3 +41,4 @@ local.properties
 # Build directories
 build/
 dist/
+junit-report/
