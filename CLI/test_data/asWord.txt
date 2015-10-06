@@ -1,0 +1,6 @@
+pattern
+pattern_
+skip this, for god's sake!
+nonwordypattern-ha
+you should find this pattern, shouldn't you?
+skip me

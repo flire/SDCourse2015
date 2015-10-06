@@ -1,0 +1,4 @@
+pattern
+no Pattern //should be case-sensitive
+and pattern here
+and no PaTtErN again

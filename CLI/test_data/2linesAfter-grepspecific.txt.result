@@ -1,0 +1,9 @@
+<occurence>pattern</occurence>
+line 1
+line 2
+----------------------------------------------
+and here goes <occurence>pattern</occurence>!
+another line 1
+another line 2
+----------------------------------------------
+oh jeez, just let this <occurence>pattern</occurence> rest

@@ -1,0 +1,7 @@
+<occurence>Pattern</occurence> //insensitive
+line1
+line2
+<lineSeparator>
+<occurence>pattern</occurence> oh
+line 1
+oh <occurence>PATTERN</occurence> my
