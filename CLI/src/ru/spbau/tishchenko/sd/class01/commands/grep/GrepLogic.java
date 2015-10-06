@@ -11,16 +11,17 @@ import java.util.regex.Pattern;
 
 public class GrepLogic {
 	private Pattern pattern;
-	private int linesAfter;
 	private HighlightingOptions highlightingOptions;
+	private final Options options;
 	
+	@Deprecated
 	public GrepLogic(String pattern, boolean asWord, boolean caseSensitive, int linesAfter) {
-		this(pattern, new Options(asWord, caseSensitive, linesAfter), HighlightingOptions.NO_HIGHLIGHTING);
+		this(pattern, new Options(asWord, caseSensitive, linesAfter, linesAfter != 0), HighlightingOptions.NO_HIGHLIGHTING);
 	}
 
 	public GrepLogic(String pattern, Options options, HighlightingOptions highlighingOptions) {
 		this.pattern = buildPattern(pattern, options.asWord, options.caseSensitive);
-		this.linesAfter = options.linesAfter;
+		this.options = options;
 		this.highlightingOptions = highlighingOptions;
 	}
 	
@@ -28,17 +29,20 @@ public class GrepLogic {
 		PrintStream outStream = new PrintStream(out);
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
 			String currentLine;
-			int following = 0;
+			int following = -1; //works as flag: when 0, you need to insert lineSeparator
 			while ((currentLine = reader.readLine()) != null) {
 				Matcher m = pattern.matcher(currentLine);
 				if (m.find()) {
-					following = linesAfter;
+					following = options.linesAfter;
 					outStream.println(m.replaceAll(highlightingOptions.startMarker
 							+ "$0"
 							+ highlightingOptions.endMarker));
 				} else if (following > 0) {
 					following--;
 					outStream.println(currentLine);
+				} else if (following == 0 && options.useSkipSeparator) {
+					outStream.println(options.skipSeparator);
+					following = -1;
 				}
 			}
 		} catch (IOException e) {
@@ -57,14 +61,24 @@ public class GrepLogic {
 	}
 	
 	public static class Options {
+		private static final String DEFAULT_LINE_SEPARATOR = "--";
 		public final boolean asWord;
 		public final boolean caseSensitive;
 		public final int linesAfter;
+		public final String skipSeparator;
+		public final boolean useSkipSeparator;
 
-		public Options(boolean asWord, boolean caseSensitive, int linesAfter) {
+		public Options(boolean asWord, boolean caseSensitive, int linesAfter, boolean useSkipSeparator) {
+			this(asWord, caseSensitive, linesAfter, useSkipSeparator, DEFAULT_LINE_SEPARATOR);
+		}
+
+		public Options(boolean asWord, boolean caseSensitive, int linesAfter, boolean useSkipSeparator,
+				String skipSeparator) {
 			this.asWord = asWord;
 			this.caseSensitive = caseSensitive;
 			this.linesAfter = linesAfter;
+			this.useSkipSeparator = useSkipSeparator;
+			this.skipSeparator = skipSeparator;
 		}
 	}
 	

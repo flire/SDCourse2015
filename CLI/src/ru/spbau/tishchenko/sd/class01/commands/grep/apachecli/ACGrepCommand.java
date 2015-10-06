@@ -45,7 +45,7 @@ public class ACGrepCommand implements ICommand {
 	        }
 	        HighlightingOptions options = shell.getHighlightingOptions();
 			GrepLogic grepExecutor = new GrepLogic(pattern, 
-					new GrepLogic.Options(asWord, !caseInsensitive, linesAfter), 
+					new GrepLogic.Options(asWord, !caseInsensitive, linesAfter, line.hasOption('A')), 
 					new GrepLogic.HighlightingOptions(options.startMarker, options.endMarker));
 			try {
 				if (file != null) {

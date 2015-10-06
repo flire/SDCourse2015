@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
 
 import com.beust.jcommander.JCommander;
 
@@ -33,7 +34,10 @@ public class JCGrepCommand implements ICommand {
 		}
         HighlightingOptions options = shell.getHighlightingOptions();
 		GrepLogic grepExecutor = new GrepLogic(pattern, 
-				new GrepLogic.Options(grepArgs.asWord, !grepArgs.caseInsensitive, grepArgs.linesAfter), 
+				new GrepLogic.Options(grepArgs.asWord,
+						!grepArgs.caseInsensitive,
+						grepArgs.linesAfter,
+						Arrays.asList(args).indexOf("-A") != -1), 
 				new GrepLogic.HighlightingOptions(options.startMarker, options.endMarker));
 		try {
 			if (file != null) {
