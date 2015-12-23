@@ -61,7 +61,7 @@ public class GrepLogic {
 	}
 	
 	public static class Options {
-		private static final String DEFAULT_LINE_SEPARATOR = "--";
+		public static final String DEFAULT_LINE_SEPARATOR = "--";
 		public final boolean asWord;
 		public final boolean caseSensitive;
 		public final int linesAfter;

@@ -1,6 +1,0 @@
-pattern
-empty
-Pattern
-empty
-empty
-and finally PATTERN!!

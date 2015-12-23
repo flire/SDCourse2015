@@ -1,9 +1,0 @@
-skipped line
-pattern
-line 1
-line 2
-skipped
-skipped
-and here goes pattern!
-another line 1
-oh jeez, just let this pattern rest

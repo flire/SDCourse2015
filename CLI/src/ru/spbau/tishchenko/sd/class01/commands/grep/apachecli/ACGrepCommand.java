@@ -58,6 +58,8 @@ public class ACGrepCommand implements ICommand {
 	    }
 	    catch( ParseException exp ) {
 	        System.err.println( "Parsing failed.  Reason: " + exp.getMessage() );
+	    } finally {
+	    	file = null;
 	    }
 	}
 

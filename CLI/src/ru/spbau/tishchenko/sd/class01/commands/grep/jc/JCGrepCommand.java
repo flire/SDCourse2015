@@ -46,6 +46,8 @@ public class JCGrepCommand implements ICommand {
 			grepExecutor.execute(in, out);
 		} catch (FileNotFoundException e) {
 			outStream.println("File not found: "+file.getAbsolutePath());
+		} finally {
+			file = null;
 		}
 	}
 
